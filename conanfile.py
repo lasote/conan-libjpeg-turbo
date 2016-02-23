@@ -5,7 +5,7 @@ from conans.tools import unzip, replace_in_file
 from conans import CMake
 
 
-class LibCurlConan(ConanFile):
+class LibJpegTurboConan(ConanFile):
     name = "libjpeg-turbo"
     version = "1.4.2"
     ZIP_FOLDER_NAME = "%s-%s" % (name, version)
