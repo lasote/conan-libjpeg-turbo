@@ -85,4 +85,7 @@ class LibJpegTurboConan(ConanFile):
             else:
                 self.cpp_info.libs = ['turbojpeg-static']
         else:
-            self.cpp_info.libs = ['turbojpeg']
+	    self.cpp_info.libs = ['turbojpeg']
+            if self.options.shared:
+                self.cpp_info.libs.append('jpeg')
+
