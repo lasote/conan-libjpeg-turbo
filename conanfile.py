@@ -53,7 +53,7 @@ class LibJpegTurboConan(ConanFile):
             cmake = CMake(self.settings)
             self.run("cd %s && mkdir _build" % self.ZIP_FOLDER_NAME)
             cd_build = "cd %s/_build" % self.ZIP_FOLDER_NAME
-            self.run('%s && cmake .. %s' % (cd_build, cmake.command_line))
+            self.run('%s && cmake .. %s -DWITH_CRT_DLL=ON' % (cd_build, cmake.command_line)) # Don't change runtime, conan will take care of
             self.run("%s && cmake --build . %s" % (cd_build, cmake.build_config))
                 
     def package(self):
@@ -67,7 +67,8 @@ class LibJpegTurboConan(ConanFile):
         if self.settings.os == "Windows":
             if self.options.shared:
                 self.copy(pattern="*.dll", dst="bin", src=self.ZIP_FOLDER_NAME, keep_path=False)
-            self.copy(pattern="*.lib", dst="lib", src=self.ZIP_FOLDER_NAME, keep_path=False)
+                self.copy(pattern="*turbojpeg.lib", dst="lib", src=self.ZIP_FOLDER_NAME, keep_path=False)
+            self.copy(pattern="*turbojpeg-static.lib", dst="lib", src=self.ZIP_FOLDER_NAME, keep_path=False)
         else:
             if self.options.shared:
                 if self.settings.os == "Macos":
@@ -79,6 +80,9 @@ class LibJpegTurboConan(ConanFile):
 
     def package_info(self):
         if self.settings.os == "Windows":
-            self.cpp_info.libs = ['libturbojpeg']
+            if self.options.shared:
+                self.cpp_info.libs = ['turbojpeg']
+            else:
+                self.cpp_info.libs = ['turbojpeg-static']
         else:
             self.cpp_info.libs = ['turbojpeg']
