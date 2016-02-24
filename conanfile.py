@@ -81,11 +81,10 @@ class LibJpegTurboConan(ConanFile):
     def package_info(self):
         if self.settings.os == "Windows":
             if self.options.shared:
-                self.cpp_info.libs = ['turbojpeg']
+                self.cpp_info.libs = ['jpeg', 'turbojpeg']
             else:
-                self.cpp_info.libs = ['turbojpeg-static']
+                self.cpp_info.libs = ['jpeg-static', 'turbojpeg-static']
         else:
-	    self.cpp_info.libs = ['turbojpeg']
-            if self.options.shared:
-                self.cpp_info.libs.append('jpeg')
+            self.cpp_info.libs = ['jpeg', 'turbojpeg']
+
 
