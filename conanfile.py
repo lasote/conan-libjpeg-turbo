@@ -44,6 +44,11 @@ class LibJpegTurboConan(ConanFile):
                 else:
                     config_options = "--host i686-apple-darwin CFLAGS='-O3 -m32' LDFLAGS=-m32"
 
+            if self.settings.os == "Macos":
+                old_str = '-install_name \$rpath/\$soname'
+                new_str = '-install_name \$soname'
+                replace_in_file("./%s/configure" % self.ZIP_FOLDER_NAME, old_str, new_str)
+
             self.run("cd %s && %s ./configure %s" % (self.ZIP_FOLDER_NAME, env.command_line, config_options))
             self.run("cd %s && %s make" % (self.ZIP_FOLDER_NAME, env.command_line))
         else:
