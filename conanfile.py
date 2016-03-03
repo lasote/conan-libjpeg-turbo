@@ -17,6 +17,11 @@ class LibJpegTurboConan(ConanFile):
     url="http://github.com/lasote/libjpeg-turbo"
     license="https://github.com/libjpeg-turbo/libjpeg-turbo/blob/1.4.2/LICENSE.txt"
     
+    def config(self):
+        try: # Try catch can be removed when conan 0.8 is released
+            del self.settings.compiler.libcxx 
+        except: 
+            pass
        
     def source(self):
         zip_name = "%s.tar.gz" % self.ZIP_FOLDER_NAME
