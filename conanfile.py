@@ -11,8 +11,8 @@ class LibJpegTurboConan(ConanFile):
     ZIP_FOLDER_NAME = "%s-%s" % (name, version)
     generators = "cmake", "txt"
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = "shared=False", "fPIC=True"
     exports = "CMakeLists.txt"
     url="http://github.com/lasote/libjpeg-turbo"
     license="https://github.com/libjpeg-turbo/libjpeg-turbo/blob/1.4.2/LICENSE.txt"
@@ -22,6 +22,9 @@ class LibJpegTurboConan(ConanFile):
             del self.settings.compiler.libcxx 
         except: 
             pass
+        
+        if self.settings.os == "Windows":
+            self.options.remove("fPIC")
        
     def source(self):
         zip_name = "%s.tar.gz" % self.ZIP_FOLDER_NAME
@@ -34,7 +37,11 @@ class LibJpegTurboConan(ConanFile):
             to reuse it later in any other project.
         """
         env = ConfigureEnvironment(self.deps_cpp_info, self.settings)
-        env_line = env.command_line.replace('CFLAGS=" "', 'CFLAGS="-fPIC"')
+        if self.options.fPIC:
+            env_line = env.command_line.replace('CFLAGS=" "', 'CFLAGS="-fPIC"')
+        else:
+            env_line = env.command_line
+        print(env_line)
         if self.settings.os == "Linux" or self.settings.os == "Macos":            
             self.run("cd %s && autoreconf -fiv" % self.ZIP_FOLDER_NAME)
             config_options = ""
@@ -49,8 +56,8 @@ class LibJpegTurboConan(ConanFile):
                 new_str = '-install_name \$soname'
                 replace_in_file("./%s/configure" % self.ZIP_FOLDER_NAME, old_str, new_str)
 
-            self.run("cd %s && %s ./configure %s" % (self.ZIP_FOLDER_NAME, env.command_line, config_options))
-            self.run("cd %s && %s make" % (self.ZIP_FOLDER_NAME, env.command_line))
+            self.run("cd %s && %s ./configure %s" % (self.ZIP_FOLDER_NAME, env_line, config_options))
+            self.run("cd %s && %s make" % (self.ZIP_FOLDER_NAME, env_line))
         else:
             conan_magic_lines = '''project(libjpeg-turbo)
     cmake_minimum_required(VERSION 3.0)
