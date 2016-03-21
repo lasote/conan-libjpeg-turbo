@@ -34,7 +34,7 @@ class LibJpegTurboConan(ConanFile):
             to reuse it later in any other project.
         """
         env = ConfigureEnvironment(self.deps_cpp_info, self.settings)
-
+        env_line = env.command_line.replace('CFLAGS=" "', 'CFLAGS="-fPIC"')
         if self.settings.os == "Linux" or self.settings.os == "Macos":            
             self.run("cd %s && autoreconf -fiv" % self.ZIP_FOLDER_NAME)
             config_options = ""
