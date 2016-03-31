@@ -40,7 +40,7 @@ class LibJpegTurboConan(ConanFile):
 
         if self.settings.os == "Linux" or self.settings.os == "Macos":
             if self.options.fPIC:
-                env_line = env.command_line.replace('CFLAGS=" "', 'CFLAGS="-fPIC"')
+                env_line = env.command_line.replace('CFLAGS="', 'CFLAGS="-fPIC ')
             else:
                 env_line = env.command_line
             self.run("cd %s && autoreconf -fiv" % self.ZIP_FOLDER_NAME)
