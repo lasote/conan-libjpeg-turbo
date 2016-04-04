@@ -28,3 +28,4 @@ class DefaultNameConan(ConanFile):
         
     def test(self):
         self.run("cd bin && .%smain" % os.sep)
+        self.run("cd bin && .%stest_headers" % os.sep)
