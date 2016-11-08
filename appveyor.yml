@@ -5,10 +5,11 @@ environment:
     PYTHON_ARCH: "32"
     
     CONAN_UPLOAD: 1
-    CONAN_REFERENCE: "libjpeg-turbo/1.4.2"
+    CONAN_REFERENCE: "libjpeg-turbo/1.5.1"
     CONAN_USERNAME: "lasote"
     CONAN_CHANNEL: "ci"
     CONAN_TOTAL_PAGES: 3
+    CONAN_STABLE_BRANCH_PATTERN: "release/*"
     
     matrix:
         - CONAN_CURRENT_PAGE: 1

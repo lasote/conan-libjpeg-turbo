@@ -6,11 +6,12 @@ language: python
 env:
   global:
     - CONAN_UPLOAD=1
-    - CONAN_REFERENCE="libjpeg-turbo/1.4.2"
+    - CONAN_REFERENCE="libjpeg-turbo/1.5.1"
     - CONAN_USERNAME="lasote"
     - CONAN_CHANNEL="ci"
     - CONAN_TOTAL_PAGES=1
     - CONAN_CURRENT_PAGE=1
+    - CONAN_STABLE_BRANCH_PATTERN="release/*"
 
   matrix:
     - CONAN_GCC_VERSIONS=4.6 CONAN_USE_DOCKER=1
