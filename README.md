@@ -3,7 +3,9 @@
 
 # conan-libjpeg-turbo
 
-[Conan.io](https://conan.io) package for lib cURL library
+[Conan.io](https://conan.io) package for lib libjpeg-turbo library.
+
+Thanks to @a-teammate for his contribution.
 
 The packages generated with this **conanfile** can be found in [conan.io](https://conan.io/source/libjpeg-turbo/1.5.1/lasote/stable).
 

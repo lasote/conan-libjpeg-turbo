@@ -8,7 +8,7 @@ env:
     - CONAN_UPLOAD=1
     - CONAN_REFERENCE="libjpeg-turbo/1.5.1"
     - CONAN_USERNAME="lasote"
-    - CONAN_CHANNEL="ci"
+    - CONAN_CHANNEL="testing"
     - CONAN_TOTAL_PAGES=1
     - CONAN_CURRENT_PAGE=1
     - CONAN_STABLE_BRANCH_PATTERN="release/*"
