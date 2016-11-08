@@ -61,14 +61,18 @@ class LibJpegTurboConan(ConanFile):
             self.run("cd %s && %s make" % (self.ZIP_FOLDER_NAME, env_line))
         else:
             conan_magic_lines = '''project(libjpeg-turbo)
-    cmake_minimum_required(VERSION 3.0)
+    cmake_minimum_required(VERSION 2.8.11)
     include(../conanbuildinfo.cmake)
     CONAN_BASIC_SETUP()
     '''
-            replace_in_file("%s/CMakeLists.txt" % self.ZIP_FOLDER_NAME, "cmake_minimum_required(VERSION 2.8.8)", conan_magic_lines)
+            replace_in_file("%s/CMakeLists.txt" % self.ZIP_FOLDER_NAME, "cmake_minimum_required(VERSION 2.8.11)", conan_magic_lines)
             replace_in_file("%s/CMakeLists.txt" % self.ZIP_FOLDER_NAME, "project(libjpeg-turbo C)", "")
             
-            cmake_options = ["-DWITH_CRT_DLL=ON"]
+            # Don't mess with runtime conan already set
+            replace_in_file("%s/CMakeLists.txt" % self.ZIP_FOLDER_NAME, 'string(REGEX REPLACE "/MD" "/MT" ${var} "${${var}}")', "")
+            replace_in_file("%s/sharedlib/CMakeLists.txt" % self.ZIP_FOLDER_NAME, 'string(REGEX REPLACE "/MT" "/MD" ${var} "${${var}}")', "")
+            
+            cmake_options = []
             if self.options.shared == True:
                 cmake_options.append("-DENABLE_STATIC=0 -DENABLE_SHARED=1")
             else:
@@ -78,7 +82,7 @@ class LibJpegTurboConan(ConanFile):
             cmake = CMake(self.settings)
             self.run("cd %s && mkdir _build" % self.ZIP_FOLDER_NAME)
             cd_build = "cd %s/_build" % self.ZIP_FOLDER_NAME
-             # Don't change runtime, conan will take care of, because conan already set the c/cpp flags, we dont need to change them
+
             self.run('%s && %s && cmake .. %s %s' % (env.command_line, cd_build, cmake.command_line, " ".join(cmake_options)))
             self.run("%s && %s && cmake --build . %s" % (env.command_line, cd_build, cmake.build_config))
                 
